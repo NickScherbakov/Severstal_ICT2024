@@ -1,3 +1,10 @@
+"""
+TITAN Analytics Platform - Django Settings
+Universal analytics platform with AI-powered insights
+
+https://github.com/NickScherbakov/Severstal_ICT2024
+"""
+
 import os
 from pathlib import Path
 

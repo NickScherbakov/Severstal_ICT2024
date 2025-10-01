@@ -448,3 +448,167 @@ class ReportFileFormatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
         fields = ('type',)
+
+
+# ============================================================================
+# TITAN Analytics Platform - Extended Serializers
+# ============================================================================
+
+from accounts.models import TemplateCategory, DataSource, UserPreferences
+
+
+class TemplateCategorySerializer(serializers.ModelSerializer):
+    """Сериализатор категорий шаблонов"""
+    subcategories = serializers.SerializerMethodField()
+    templates_count = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = TemplateCategory
+        fields = (
+            'id', 'name', 'slug', 'icon', 
+            'description', 'parent', 'position',
+            'subcategories', 'templates_count'
+        )
+    
+    def get_subcategories(self, obj):
+        if obj.subcategories.exists():
+            return TemplateCategorySerializer(
+                obj.subcategories.all(), 
+                many=True
+            ).data
+        return []
+    
+    def get_templates_count(self, obj):
+        return obj.templates.count()
+
+
+class TemplateMarketplaceSerializer(serializers.ModelSerializer):
+    """Сериализатор для публичного Marketplace"""
+    theme_name = serializers.CharField(source='theme.name', read_only=True)
+    category_name = serializers.CharField(source='category.name', read_only=True)
+    category_slug = serializers.CharField(source='category.slug', read_only=True)
+    author_name = serializers.CharField(source='author.username', read_only=True)
+    blocks_count = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Template
+        fields = (
+            'id', 'name', 'description', 
+            'theme_name', 'category_name', 'category_slug',
+            'tags', 'use_count', 'rating', 
+            'is_premium', 'author_name',
+            'blocks_count', 'created_at'
+        )
+    
+    def get_blocks_count(self, obj):
+        return obj.meta_blocks.count()
+
+
+class MetaBlockDetailSerializer(serializers.ModelSerializer):
+    """Детальный сериализатор мета-блока"""
+    data_sources_names = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = MetaBlock
+        fields = (
+            'id', 'query_template', 'type', 'position',
+            'filters', 'processing_params', 
+            'data_sources', 'data_sources_names'
+        )
+    
+    def get_data_sources_names(self, obj):
+        return [ds.name for ds in obj.data_sources.all()]
+
+
+class TemplateDetailSerializer(serializers.ModelSerializer):
+    """Детальный сериализатор шаблона с мета-блоками"""
+    meta_blocks = MetaBlockDetailSerializer(many=True, read_only=True)
+    theme_name = serializers.CharField(source='theme.name', read_only=True)
+    category_name = serializers.CharField(source='category.name', read_only=True)
+    
+    class Meta:
+        model = Template
+        fields = (
+            'id', 'name', 'description', 
+            'theme', 'theme_name',
+            'category', 'category_name',
+            'tags', 'is_public', 'is_premium',
+            'use_count', 'rating',
+            'meta_blocks', 'created_at'
+        )
+
+
+class TemplateExportSerializer(serializers.Serializer):
+    """Сериализатор для экспорта шаблона"""
+    name = serializers.CharField()
+    description = serializers.CharField(required=False)
+    theme = serializers.CharField(required=False, allow_null=True)
+    category = serializers.CharField(required=False, allow_null=True)
+    tags = serializers.ListField(child=serializers.CharField(), required=False)
+    meta_blocks = serializers.ListField(required=False)
+    version = serializers.CharField(default='1.0')
+    exported_by = serializers.CharField(default='TITAN Analytics Platform')
+
+
+class TemplateImportSerializer(serializers.Serializer):
+    """Сериализатор для импорта шаблона"""
+    name = serializers.CharField()
+    description = serializers.CharField(required=False, allow_blank=True)
+    theme = serializers.CharField(required=False, allow_null=True)
+    category = serializers.CharField(required=False, allow_null=True)
+    tags = serializers.ListField(
+        child=serializers.CharField(), 
+        required=False, 
+        default=list
+    )
+    meta_blocks = serializers.ListField(required=True)
+    
+    def validate_meta_blocks(self, value):
+        """Валидация структуры мета-блоков"""
+        for block in value:
+            required_fields = ['query_template', 'type', 'position']
+            for field in required_fields:
+                if field not in block:
+                    raise serializers.ValidationError(
+                        f'Поле {field} обязательно для каждого мета-блока'
+                    )
+            
+            # Проверка типа блока
+            valid_types = [choice[0] for choice in MetaBlock.TYPES]
+            if block['type'] not in valid_types:
+                raise serializers.ValidationError(
+                    f'Недопустимый тип блока: {block["type"]}'
+                )
+        
+        return value
+
+
+class DataSourceSerializer(serializers.ModelSerializer):
+    """Сериализатор источников данных"""
+    
+    class Meta:
+        model = DataSource
+        fields = (
+            'id', 'name', 'source_type', 
+            'base_url', 'api_key_required', 
+            'is_active', 'config'
+        )
+
+
+class UserPreferencesSerializer(serializers.ModelSerializer):
+    """Сериализатор пользовательских настроек"""
+    favorite_templates_details = TemplateMarketplaceSerializer(
+        source='favorite_templates', 
+        many=True, 
+        read_only=True
+    )
+    
+    class Meta:
+        model = UserPreferences
+        fields = (
+            'id', 'user', 
+            'favorite_templates', 'favorite_templates_details',
+            'default_theme', 'default_ai_model', 
+            'settings'
+        )
+        read_only_fields = ('user',)

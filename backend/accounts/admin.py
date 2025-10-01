@@ -41,3 +41,25 @@ class WebPageAdmin(admin.ModelAdmin):
 @admin.register(models.Files)
 class FilesAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(models.DataSource)
+class DataSourceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'source_type', 'is_active', 'api_key_required')
+    list_filter = ('source_type', 'is_active', 'api_key_required')
+    search_fields = ('name', 'base_url')
+
+
+@admin.register(models.TemplateCategory)
+class TemplateCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'parent', 'position')
+    list_filter = ('parent',)
+    search_fields = ('name', 'description')
+    prepopulated_fields = {'slug': ('name',)}
+
+
+@admin.register(models.UserPreferences)
+class UserPreferencesAdmin(admin.ModelAdmin):
+    list_display = ('user', 'default_ai_model', 'default_theme')
+    list_filter = ('default_ai_model',)
+    search_fields = ('user__username',)

@@ -77,6 +77,51 @@ class Template(models.Model):
         verbose_name='Тематика отчета',
         null=True
     )
+    category = models.ForeignKey(
+        'TemplateCategory',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='templates',
+        verbose_name='Категория'
+    )
+    description = models.TextField(
+        'Описание',
+        blank=True
+    )
+    is_public = models.BooleanField(
+        'Публичный',
+        default=False
+    )
+    is_premium = models.BooleanField(
+        'Премиум',
+        default=False
+    )
+    tags = models.JSONField(
+        'Теги',
+        default=list,
+        blank=True
+    )
+    use_count = models.IntegerField(
+        'Количество использований',
+        default=0
+    )
+    rating = models.FloatField(
+        'Рейтинг',
+        default=0.0
+    )
+    author = models.ForeignKey(
+        'users.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='created_templates',
+        verbose_name='Автор'
+    )
+    created_at = models.DateTimeField(
+        'Дата создания',
+        auto_now_add=True
+    )
 
     class Meta:
         verbose_name = 'Шаблон отчета'
@@ -90,10 +135,25 @@ class MetaBlock(models.Model):
     PLOTLY = 'plotly'
     TEXT = 'text'
     VIDEO = 'video'
+    TABLE = 'table'
+    MAP = 'map'
+    TIMELINE = 'timeline'
+    NETWORK = 'network'
+    COMPARISON = 'comparison'
+    SENTIMENT = 'sentiment'
+    FORECAST = 'forecast'
+    
     TYPES = (
         (PLOTLY, 'Plotly'),
         (TEXT, 'Текст'),
         (VIDEO, 'Видео'),
+        (TABLE, 'Таблица'),
+        (MAP, 'Карта'),
+        (TIMELINE, 'Таймлайн'),
+        (NETWORK, 'Граф связей'),
+        (COMPARISON, 'Сравнение'),
+        (SENTIMENT, 'Анализ тональности'),
+        (FORECAST, 'Прогноз'),
     )
 
     query_template = models.CharField(
@@ -111,6 +171,23 @@ class MetaBlock(models.Model):
     )
     position = models.PositiveIntegerField(
         'Позиция'
+    )
+    data_sources = models.ManyToManyField(
+        'DataSource',
+        blank=True,
+        verbose_name='Источники данных'
+    )
+    filters = models.JSONField(
+        'Фильтры',
+        default=dict,
+        blank=True,
+        help_text='JSON с настройками фильтрации (домены, даты, языки и т.д.)'
+    )
+    processing_params = models.JSONField(
+        'Параметры обработки',
+        default=dict,
+        blank=True,
+        help_text='Параметры для AI/ML обработки'
     )
 
     class Meta:
@@ -360,3 +437,145 @@ class Files(models.Model):
     class Meta:
         verbose_name = 'Файл пользователя'
         verbose_name_plural = 'Пользовательские файлы'
+
+
+class DataSource(models.Model):
+    """Регистр доступных источников данных для TITAN Analytics"""
+    WEB = 'web'
+    PDF = 'pdf'
+    VIDEO = 'video'
+    API = 'api'
+    DATABASE = 'database'
+    FILE = 'file'
+    SOCIAL = 'social'
+    NEWS = 'news'
+    
+    SOURCE_TYPES = (
+        (WEB, 'Веб-страница'),
+        (PDF, 'PDF документ'),
+        (VIDEO, 'Видео'),
+        (API, 'API'),
+        (DATABASE, 'База данных'),
+        (FILE, 'Файл (CSV/Excel)'),
+        (SOCIAL, 'Социальные сети'),
+        (NEWS, 'Новостные агрегаторы'),
+    )
+    
+    name = models.CharField(
+        'Название',
+        max_length=200
+    )
+    source_type = models.CharField(
+        'Тип источника',
+        max_length=20,
+        choices=SOURCE_TYPES
+    )
+    base_url = models.URLField(
+        'Базовый URL',
+        blank=True
+    )
+    api_key_required = models.BooleanField(
+        'Требуется API ключ',
+        default=False
+    )
+    is_active = models.BooleanField(
+        'Активен',
+        default=True
+    )
+    config = models.JSONField(
+        'Конфигурация',
+        default=dict,
+        blank=True
+    )
+    
+    class Meta:
+        verbose_name = 'Источник данных'
+        verbose_name_plural = 'Источники данных'
+    
+    def __str__(self) -> str:
+        return self.name
+
+
+class TemplateCategory(models.Model):
+    """Категории шаблонов для различных use-cases"""
+    name = models.CharField(
+        'Название',
+        max_length=200
+    )
+    slug = models.SlugField(
+        'Slug',
+        unique=True
+    )
+    icon = models.CharField(
+        'Иконка',
+        max_length=50,
+        blank=True
+    )
+    description = models.TextField(
+        'Описание',
+        blank=True
+    )
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='subcategories',
+        verbose_name='Родительская категория'
+    )
+    position = models.PositiveIntegerField(
+        'Позиция',
+        default=0
+    )
+    
+    class Meta:
+        verbose_name = 'Категория шаблона'
+        verbose_name_plural = 'Категории шаблонов'
+        ordering = ['position', 'name']
+    
+    def __str__(self) -> str:
+        return self.name
+
+
+class UserPreferences(models.Model):
+    """Пользовательские настройки и предпочтения"""
+    user = models.OneToOneField(
+        'users.User',
+        on_delete=models.CASCADE,
+        related_name='preferences',
+        verbose_name='Пользователь'
+    )
+    favorite_templates = models.ManyToManyField(
+        'Template',
+        blank=True,
+        related_name='favorited_by',
+        verbose_name='Избранные шаблоны'
+    )
+    default_theme = models.ForeignKey(
+        'Theme',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='Тематика по умолчанию'
+    )
+    default_ai_model = models.CharField(
+        'AI модель по умолчанию',
+        max_length=50,
+        default='yandexgpt',
+        choices=(
+            ('yandexgpt', 'YandexGPT'),
+            ('yandexgpt-lite', 'YandexGPT Lite'),
+        )
+    )
+    settings = models.JSONField(
+        'Настройки',
+        default=dict,
+        blank=True
+    )
+    
+    class Meta:
+        verbose_name = 'Пользовательские настройки'
+        verbose_name_plural = 'Пользовательские настройки'
+    
+    def __str__(self) -> str:
+        return f'Настройки {self.user.username}'

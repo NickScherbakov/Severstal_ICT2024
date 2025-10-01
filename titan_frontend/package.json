@@ -1,8 +1,22 @@
 {
-  "name": "titan_analytics_19",
+  "name": "titan-analytics-platform",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
+  "description": "TITAN Analytics Platform - Universal data analytics and AI-powered insights",
+  "author": "TITAN Analytics Team",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NickScherbakov/Severstal_ICT2024"
+  },
+  "keywords": [
+    "analytics",
+    "data-processing",
+    "ai",
+    "business-intelligence",
+    "react",
+    "typescript"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",

@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TITAN Analytics Platform - Universal AI-powered data analytics platform. Transform any data into actionable insights.">
+    <meta name="keywords" content="analytics, AI, data processing, business intelligence, machine learning, YandexGPT">
+    <meta property="og:title" content="TITAN Analytics Platform">
+    <meta property="og:description" content="Universal AI-powered data analytics platform">
+    <meta property="og:image" content="https://nickscherbakov.github.io/Severstal_ICT2024/assets/og-image.png">
+    <title>TITAN Analytics Platform - Universal AI-Powered Analytics</title>
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #7c3aed;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+        }
+        
+        .logo {
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            letter-spacing: -2px;
+            animation: fadeInDown 1s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .tagline {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            animation: fadeIn 1.5s ease;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+            animation: fadeIn 2s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 2s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+        
+        /* Stats Section */
+        .stats {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: -50px auto 0;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient-3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+        
+        /* Features Section */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #64748b;
+            margin-bottom: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            padding: 2.5rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-description {
+            color: #64748b;
+            line-height: 1.8;
+        }
+        
+        /* Use Cases */
+        .use-cases {
+            background: var(--light);
+        }
+        
+        .use-case-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .use-case-card:hover {
+            border-left-width: 10px;
+            transform: translateX(5px);
+        }
+        
+        .use-case-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .use-case-desc {
+            color: #64748b;
+        }
+        
+        /* Architecture */
+        .architecture {
+            background: var(--dark);
+            color: white;
+        }
+        
+        .architecture-diagram {
+            background: rgba(255,255,255,0.05);
+            padding: 3rem;
+            border-radius: 20px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            line-height: 1.8;
+        }
+        
+        /* Pricing */
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .pricing-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        
+        .pricing-card.featured {
+            background: var(--gradient-1);
+            color: white;
+            transform: scale(1.08);
+            border: none;
+        }
+        
+        .price {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 1rem 0;
+        }
+        
+        .price-label {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin: 2rem 0;
+        }
+        
+        .pricing-features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .pricing-card.featured .pricing-features li {
+            border-bottom-color: rgba(255,255,255,0.2);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: var(--gradient-2);
+            color: white;
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+        
+        .cta-section h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-section a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+            
+            .tagline {
+                font-size: 1.3rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                margin: 0 1rem;
+            }
+        }
+        
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="logo">🎯 TITAN</div>
+            <h1 class="tagline">Universal Analytics Platform</h1>
+            <p class="subtitle">Transform any data into actionable insights with AI-powered analytics</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/NickScherbakov/Severstal_ICT2024" class="btn btn-primary">
+                    ⭐ Star on GitHub
+                </a>
+                <a href="#features" class="btn btn-secondary">
+                    🚀 Explore Features
+                </a>
+                <a href="https://github.com/NickScherbakov/Severstal_ICT2024/blob/master/QUICKSTART.md" class="btn btn-secondary">
+                    📖 Quick Start
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <div style="background: var(--light); padding: 4rem 0;">
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">10</div>
+                <div class="stat-label">Block Types</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">6</div>
+                <div class="stat-label">AI Processors</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">14</div>
+                <div class="stat-label">API Endpoints</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Template Categories</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Possibilities</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="section" id="features">
+        <h2 class="section-title">✨ Powerful Features</h2>
+        <p class="section-subtitle">Everything you need for comprehensive data analytics in one platform</p>
+        
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🤖</div>
+                <h3 class="feature-title">AI-Powered Processing</h3>
+                <p class="feature-description">
+                    6 specialized AI processors including sentiment analysis, network graphs, forecasting, and timeline generation powered by YandexGPT.
+                </p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">10 Visualization Types</h3>
+                <p class="feature-description">
+                    From interactive Plotly charts to network graphs, timelines, maps, and comparison matrices - visualize your data your way.
+                </p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🔌</div>
+                <h3 class="feature-title">Modular Architecture</h3>
+                <p class="feature-description">
+                    Plugin-based processor system. Easily extend functionality by creating custom data processors.
+                </p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <div class="feature-icon">📚</div>
+                <h3 class="feature-title">Template Library</h3>
+                <p class="feature-description">
+                    6+ pre-built templates for business analytics, scientific research, media monitoring, legal analysis, and education.
+                </p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🌐</div>
+                <h3 class="feature-title">Public Marketplace</h3>
+                <p class="feature-description">
+                    Share and discover analytics templates. Export/import in JSON format for seamless collaboration.
+                </p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🔍</div>
+                <h3 class="feature-title">Smart Search</h3>
+                <p class="feature-description">
+                    Semantic search with synonym expansion (RuWordNet), morphological analysis, and relevance ranking.
+                </p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🎬</div>
+                <h3 class="feature-title">Multi-Source Data</h3>
+                <p class="feature-description">
+                    Web pages, PDFs, videos (YouTube transcripts), APIs, databases, and file uploads - all in one place.
+                </p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <div class="feature-icon">📝</div>
+                <h3 class="feature-title">Export Options</h3>
+                <p class="feature-description">
+                    Generate professional reports in PDF, Word, or Excel format with interactive visualizations.
+                </p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Async Processing</h3>
+                <p class="feature-description">
+                    Celery + RabbitMQ for background tasks, scheduled updates, and heavy data processing.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="section use-cases">
+        <h2 class="section-title">🎯 Use Cases</h2>
+        <p class="section-subtitle">Transform your industry with TITAN Analytics</p>
+        
+        <div class="use-case-card fade-in">
+            <div class="use-case-title">💼 Business Intelligence</div>
+            <p class="use-case-desc">
+                Market analysis, competitive intelligence, financial reporting, trend forecasting, SWOT analysis
+            </p>
+        </div>
+        
+        <div class="use-case-card fade-in">
+            <div class="use-case-title">🔬 Scientific Research</div>
+            <p class="use-case-desc">
+                Literature reviews, citation analysis, publication trends, collaboration networks
+            </p>
+        </div>
+        
+        <div class="use-case-card fade-in">
+            <div class="use-case-title">📺 Media Monitoring</div>
+            <p class="use-case-desc">
+                Brand reputation tracking, sentiment analysis, media mentions, trend identification
+            </p>
+        </div>
+        
+        <div class="use-case-card fade-in">
+            <div class="use-case-title">⚖️ Legal Analytics</div>
+            <p class="use-case-desc">
+                Legislative monitoring, case law analysis, compliance tracking, regulatory impact assessment
+            </p>
+        </div>
+        
+        <div class="use-case-card fade-in">
+            <div class="use-case-title">🎓 Education</div>
+            <p class="use-case-desc">
+                Course materials, knowledge systematization, learning analytics, educational content curation
+            </p>
+        </div>
+    </section>
+
+    <!-- Architecture -->
+    <section class="section architecture">
+        <h2 class="section-title">🏗️ Architecture</h2>
+        <p class="section-subtitle">Built with modern, scalable technologies</p>
+        
+        <div class="architecture-diagram">
+<pre style="color: #94a3b8;">
+┌─────────────────────────────────────────────────────────────┐
+│                   TITAN Analytics Platform                   │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  Frontend (React + TypeScript)                               │
+│  ├── Template Constructor                                    │
+│  ├── Marketplace UI                                          │
+│  └── Interactive Visualizations (Plotly.js)                  │
+│                                                               │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  Backend (Django REST API)                                   │
+│  │                                                            │
+│  ├── Data Processing Pipeline                                │
+│  │   ├── Web Scraper (BeautifulSoup, Playwright)            │
+│  │   ├── PDF Parser (Pdfplumber, Camelot)                   │
+│  │   ├── Video Analyzer (YouTube API)                        │
+│  │   └── File Processor (CSV, Excel)                         │
+│  │                                                            │
+│  ├── AI Processing Layer                                     │
+│  │   ├── YandexGPT Integration                               │
+│  │   ├── Sentiment Analysis                                  │
+│  │   ├── Entity Extraction & Network Graphs                  │
+│  │   └── Summarization & Forecasting                         │
+│  │                                                            │
+│  ├── Search Engine                                           │
+│  │   ├── Semantic Search                                     │
+│  │   ├── Synonym Expansion (RuWordNet)                       │
+│  │   └── Relevance Ranking                                   │
+│  │                                                            │
+│  └── Processor Registry (Modular System)                     │
+│      ├── SentimentProcessor                                  │
+│      ├── NetworkGraphProcessor                               │
+│      ├── TimelineProcessor                                   │
+│      ├── ForecastProcessor                                   │
+│      └── Custom Processors...                                │
+│                                                               │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  Data Layer                                                   │
+│  ├── PostgreSQL 15 (Structured Data)                         │
+│  ├── File Storage (PDFs, Media)                              │
+│  └── Search Index                                            │
+│                                                               │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  Task Queue (Celery + RabbitMQ)                              │
+│  ├── Async Data Collection                                   │
+│  ├── Report Generation                                       │
+│  └── Scheduled Updates                                       │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+</pre>
+        </div>
+    </section>
+
+    <!-- Pricing / Investment -->
+    <section class="section">
+        <h2 class="section-title">💎 Open Source & Investment Opportunities</h2>
+        <p class="section-subtitle">Choose your engagement level</p>
+        
+        <div class="pricing-cards">
+            <div class="pricing-card fade-in">
+                <h3>🆓 Open Source</h3>
+                <div class="price">FREE</div>
+                <p class="price-label">MIT License</p>
+                <ul class="pricing-features">
+                    <li>✅ Full source code access</li>
+                    <li>✅ All features unlocked</li>
+                    <li>✅ Community support</li>
+                    <li>✅ Regular updates</li>
+                    <li>✅ Documentation</li>
+                    <li>✅ GitHub Issues</li>
+                </ul>
+                <a href="https://github.com/NickScherbakov/Severstal_ICT2024" class="btn btn-primary">
+                    Clone Repository
+                </a>
+            </div>
+            
+            <div class="pricing-card featured fade-in">
+                <h3>🚀 Enterprise License</h3>
+                <div class="price">Custom</div>
+                <p class="price-label">Exclusive Rights</p>
+                <ul class="pricing-features">
+                    <li>✅ Private fork</li>
+                    <li>✅ Custom features</li>
+                    <li>✅ Priority support</li>
+                    <li>✅ Training sessions</li>
+                    <li>✅ Dedicated developer</li>
+                    <li>✅ SLA guarantees</li>
+                    <li>✅ White-label options</li>
+                </ul>
+                <a href="mailto:contact@titan-analytics.dev" class="btn btn-primary">
+                    Contact Sales
+                </a>
+            </div>
+            
+            <div class="pricing-card fade-in">
+                <h3>💰 Investment</h3>
+                <div class="price">🔥</div>
+                <p class="price-label">Be a Part of the Future</p>
+                <ul class="pricing-features">
+                    <li>✅ Equity stake</li>
+                    <li>✅ Board seat option</li>
+                    <li>✅ Strategic partnership</li>
+                    <li>✅ Technology licensing</li>
+                    <li>✅ Revenue share</li>
+                    <li>✅ Exclusive features</li>
+                    <li>✅ Market expansion</li>
+                </ul>
+                <a href="mailto:invest@titan-analytics.dev" class="btn btn-primary">
+                    Invest Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Transform Your Analytics?</h2>
+        <p>Join thousands of developers building the future of data intelligence</p>
+        <div class="cta-buttons">
+            <a href="https://github.com/NickScherbakov/Severstal_ICT2024" class="btn btn-primary">
+                🚀 Get Started Free
+            </a>
+            <a href="https://github.com/NickScherbakov/Severstal_ICT2024/blob/master/API_DOCUMENTATION.md" class="btn btn-secondary">
+                📚 Read Documentation
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TITAN Platform</h3>
+                <p style="color: #94a3b8; line-height: 1.8;">
+                    Universal AI-powered analytics platform for transforming any data into actionable insights.
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="https://github.com/NickScherbakov/Severstal_ICT2024">GitHub Repository</a></li>
+                    <li><a href="https://github.com/NickScherbakov/Severstal_ICT2024/blob/master/README.md">Documentation</a></li>
+                    <li><a href="https://github.com/NickScherbakov/Severstal_ICT2024/blob/master/QUICKSTART.md">Quick Start</a></li>
+                    <li><a href="https://github.com/NickScherbakov/Severstal_ICT2024/blob/master/API_DOCUMENTATION.md">API Reference</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://github.com/NickScherbakov/Severstal_ICT2024/blob/master/CHANGELOG.md">Changelog</a></li>
+                    <li><a href="https://github.com/NickScherbakov/Severstal_ICT2024/blob/master/UPGRADE_GUIDE.md">Upgrade Guide</a></li>
+                    <li><a href="https://github.com/NickScherbakov/Severstal_ICT2024/issues">Issues</a></li>
+                    <li><a href="https://github.com/NickScherbakov/Severstal_ICT2024/discussions">Discussions</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="https://github.com/NickScherbakov">GitHub Profile</a></li>
+                    <li><a href="https://github.com/NickScherbakov/Severstal_ICT2024/stargazers">Star on GitHub ⭐</a></li>
+                    <li><a href="mailto:contact@titan-analytics.dev">Contact Us</a></li>
+                    <li><a href="mailto:invest@titan-analytics.dev">Investment Inquiries</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024-2025 TITAN Analytics Platform. Licensed under MIT.</p>
+            <p>Built with ❤️ by NickScherbakov & Contributors</p>
+        </div>
+    </footer>
+
+    <script>
+        // Fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

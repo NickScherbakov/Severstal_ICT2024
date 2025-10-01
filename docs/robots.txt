@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nickscherbakov.github.io/Severstal_ICT2024/sitemap.xml

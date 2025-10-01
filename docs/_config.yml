@@ -1,0 +1,52 @@
+# GitHub Pages Configuration for TITAN Analytics Platform
+
+title: TITAN Analytics Platform
+description: Universal AI-powered data analytics platform for transforming any data into actionable insights
+author: NickScherbakov
+email: contact@titan-analytics.dev
+
+# GitHub
+repository: NickScherbakov/Severstal_ICT2024
+github_username: NickScherbakov
+
+# Build settings
+markdown: kramdown
+theme: null  # Using custom HTML/CSS
+
+# URLs
+url: "https://nickscherbakov.github.io"
+baseurl: "/Severstal_ICT2024"
+
+# SEO
+lang: en-US
+logo: /assets/logo.png
+social:
+  name: TITAN Analytics Platform
+  links:
+    - https://github.com/NickScherbakov/Severstal_ICT2024
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor/
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /:collection/:name
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+      image: /assets/og-image.png
